@@ -1,0 +1,338 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>برنامج التفوق - الثالثة متوسط</title>
+    <style>
+        :root {
+            --bg-color: #0b0b0b;
+            --card-bg: #141414;
+            --gold: #d4af37;
+            --gold-hover: #f3e5ab;
+            --text-color: #ffffff;
+            --itachi-red: #990000;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            background-image: radial-gradient(circle at 10% 20%, rgba(153, 0, 0, 0.15) 0%, transparent 50%),
+                              radial-gradient(circle at 90% 80%, rgba(153, 0, 0, 0.1) 0%, transparent 50%);
+            padding-bottom: 30px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background-color: var(--card-bg);
+            border-bottom: 3px solid var(--gold);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+        }
+
+        header h1 {
+            color: var(--gold);
+            margin: 0;
+            font-size: 2.2rem;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+        }
+
+        header p {
+            color: #b3b3b3;
+            margin: 10px 0 0 0;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1300px;
+            margin: 25px auto;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+        }
+
+        h2 {
+            color: var(--gold);
+            margin-top: 0;
+            border-bottom: 2px solid var(--itachi-red);
+            padding-bottom: 8px;
+            font-size: 1.4rem;
+        }
+
+        /* تنسيق جدول المراجعة المنظم */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        th, td {
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 12px 10px;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: rgba(153, 0, 0, 0.2);
+            color: var(--gold);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        .badge-math { background-color: #2b5797; }
+        .badge-physics { background-color: #339933; }
+        .badge-lang { background-color: #b91d47; }
+        .badge-hist { background-color: #7e3878; }
+
+        /* قائمة الدروس */
+        .lessons-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0 0;
+        }
+
+        .lessons-list li {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lessons-list li::before {
+            content: "✦ ";
+            color: var(--gold);
+        }
+
+        /* نظام الشات المرافق */
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            height: 350px;
+            margin-top: 20px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 6px;
+            padding: 10px;
+            background: rgba(0,0,0,0.4);
+            margin-bottom: 10px;
+        }
+
+        .msg {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            max-width: 85%;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .msg.bot {
+            background-color: rgba(153, 0, 0, 0.25);
+            border-right: 3px solid var(--itachi-red);
+        }
+
+        .msg.user {
+            background-color: rgba(212, 175, 55, 0.15);
+            border-left: 3px solid var(--gold);
+            margin-right: auto;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            background: #000;
+            border: 1px solid var(--gold);
+            color: #fff;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .chat-input button {
+            background: var(--gold);
+            color: #000;
+            border: none;
+            padding: 0 15px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>بوابة الثالثة متوسط - برنامج المراجعة المنظم</h1>
+        <p>مخطط دراسي شامل لشاشة واحدة لضمان التفوق والنجاح</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- العمود الأول: جدول التوقيت الأسبوعي للمراجعة -->
+        <div class="card">
+            <h2>الجدول الزمني المقترح للمراجعة الأسبوعية</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اليوم</th>
+                            <th>الفترة الأولى (مساءً)</th>
+                            <th>الفترة الثانية (ليلاً)</th>
+                            <th>التركيز الأساسي</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>السبت</td>
+                            <td><span class="badge badge-math">رياضيات</span> (أنشطة عددية)</td>
+                            <td><span class="badge badge-lang">لغة إنجليزية</span> (قواعد Basics)</td>
+                            <td>حل تمارين الكتاب المدرسي</td>
+                        </tr>
+                        <tr>
+                            <td>الأحد</td>
+                            <td><span class="badge badge-physics">فيزياء</span> (الطاقة وتحولاتها)</td>
+                            <td>لغة عربية (قواعد ولغة)</td>
+                            <td>فهم المفاهيم الأساسية</td>
+                        </tr>
+                        <tr>
+                            <td>الإثنين</td>
+                            <td><span class="badge badge-math">رياضيات</span> (أنشطة هندسية)</td>
+                            <td>علوم الطبيعة والحياة</td>
+                            <td>تطبيقات وحالات عملية</td>
+                        </tr>
+                        <tr>
+                            <td>الثلاثاء</td>
+                            <td><span class="badge badge-hist">تاريخ وجغرافيا</span></td>
+                            <td><span class="badge badge-lang">لغة فرنسية</span></td>
+                            <td>الحفظ والمراجعة الذكية</td>
+                        </tr>
+                        <tr>
+                            <td>الأربعاء</td>
+                            <td><span class="badge badge-physics">فيزياء</span> (المادة وتحولاتها)</td>
+                            <td>تربية إسلامية ومدنية</td>
+                            <td>تلخيص الدروس في كناش</td>
+                        </tr>
+                        <tr>
+                            <td>الخميس</td>
+                            <td><span class="badge badge-math">رياضيات</span> (مراجعة عامة)</td>
+                            <td><span class="badge badge-lang">لغة إنجليزية</span> (تطبيقات)</td>
+                            <td>تحضير فروض واختبارات</td>
+                        </tr>
+                        <tr>
+                            <td>الجمعة</td>
+                            <td colspan="2" style="color: var(--gold); font-weight: bold;">راحة + تنظيم ملفات الأسبوع القادم</td>
+                            <td>تجديد الطاقة للاستمرار</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- العمود الثاني: الدروس الحركية ونظام المساعد التفاعلي -->
+        <div>
+            <div class="card">
+                <h2>أهم محاور السنة 3 متوسط</h2>
+                <ul class="lessons-list">
+                    <li><span>الرياضيات:</span> القوى ذات أسس صحيحة نسبية، نظرية فيثاغورس.</li>
+                    <li><span>الفيزياء:</span> التفاعل الكيميائي كنموذج للتحول الكيميائي.</li>
+                    <li><span>الإنجليزية:</span> التركيز على القواعد النحوية الأساسية (Grammar).</li>
+                    <li><span>الجغرافيا:</span> قارة أوقيانوسيا (الخصائص الطبيعية والبشرية).</li>
+                </ul>
+            </div>
+
+            <div class="card chat-box">
+                <h2>مساعد الدراسة الذكي</h2>
+                <div class="chat-messages" id="chatLogs">
+                    <div class="msg bot">مرحباً بك! أنا مساعدك الدراسي. اكتب لي المادة التي ستراجعها اليوم وسأعطيك نصيحة ذهبية فوراً!</div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="userMsg" placeholder="اكتب اسم المادة هنا..." onkeypress="checkEnter(event)">
+                    <button onclick="replyUser()">إرسال</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function replyUser() {
+            const input = document.getElementById('userMsg');
+            const txt = input.value.trim();
+            if(!txt) return;
+
+            const logs = document.getElementById('chatLogs');
+            
+            // إضافة رسالة المستخدم
+            const uDiv = document.createElement('div');
+            uDiv.className = 'msg user';
+            uDiv.textContent = txt;
+            logs.appendChild(uDiv);
+            input.value = '';
+
+            // رد تفاعلي مبرمج بناءً على المادة
+            setTimeout(() => {
+                const bDiv = document.createElement('div');
+                bDiv.className = 'msg bot';
+                
+                if(txt.includes('رياضيات')) {
+                    bDiv.textContent = "الرياضيات في الـ 3 متوسط تحتاج لحل التمارين بكثرة. ركز جيداً على قواعد الحساب على القوى والكسور!";
+                } else if(txt.includes('انجليزية') || txt.includes('إنجليزية') || txt.includes('english')) {
+                    bDiv.textContent = "رائع! ركز أولاً على التراكيب القواعدية الأساسية (Grammar) والـ Tenses قبل حفظ الكلمات الصعبة.";
+                } else if(txt.includes('فيزياء')) {
+                    bDiv.textContent = "في الفيزياء، وازن المعادلات الكيميائية بدقة وتذكر دائماً مبدأ انحفاظ الكتلة.";
+                } else {
+                    bDiv.textContent = `اختيار موفق! مراجعة ${txt} بانتظام والالتزام بالجدول هو سر الانتقال بقوة للسنة الرابعة متوسط. واصل!`;
+                }
+                
+                logs.appendChild(bDiv);
+                logs.scrollTop = logs.scrollHeight;
+            }, 800);
+            
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        function checkEnter(e) {
+            if(e.key === 'Enter') replyUser();
+        }
+    </script>
+</body>
+</html>
